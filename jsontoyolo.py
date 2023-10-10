@@ -26,18 +26,23 @@ if split_ratio > 0:
     os.makedirs(validate_dir, exist_ok=True)
 
 json_files = [f for f in os.listdir(input_dir) if f.endswith('.json')]
+image_files = [f for f in os.listdir(input_dir) if f.endswith(('.jpg', '.png', '.jpeg'))]
 
 if split_ratio > 0:
-    train_files, validate_files = train_test_split(json_files, test_size=split_ratio)
+    train_images, validate_images = train_test_split(image_files, test_size=split_ratio)
 else:
-    train_files = json_files
+    train_images = image_files
+
+for image_file in image_files:
+    current_output_dir = train_dir if image_file in train_images else validate_dir
+    shutil.copy(os.path.join(input_dir, image_file), current_output_dir)
 
 # Use tqdm for progress bar
 for filename in tqdm(json_files):
     with open(os.path.join(input_dir, filename)) as f:
         data = json.load(f)
 
-    if filename in train_files:
+    if filename.replace('.json', '') + '.jpg' in train_images:
         current_output_dir = train_dir
     else:
         current_output_dir = validate_dir
@@ -62,11 +67,5 @@ for filename in tqdm(json_files):
             class_label = class_labels[shape['label']]
 
             out_file.write(f"{class_label} {x} {y} {w} {h}\n")
-
-    image_filename = filename.replace('.json', '')
-    for ext in ['.jpg', '.png', '.jpeg']: # if your images have a different file extension, modify/add it here
-        if os.path.isfile(os.path.join(input_dir, image_filename + ext)):
-            shutil.copy(os.path.join(input_dir, image_filename + ext), current_output_dir)
-            break
 
 print("Conversion and split completed successfully!")
