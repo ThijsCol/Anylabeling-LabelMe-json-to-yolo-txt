@@ -21,8 +21,8 @@ os.makedirs(output_dir, exist_ok=True)
 train_dir = os.path.join(output_dir, 'train')
 os.makedirs(train_dir, exist_ok=True)
 
+validate_dir = os.path.join(output_dir, 'validate')
 if split_ratio > 0:
-    validate_dir = os.path.join(output_dir, 'validate')
     os.makedirs(validate_dir, exist_ok=True)
 
 json_files = [f for f in os.listdir(input_dir) if f.endswith('.json')]
@@ -33,6 +33,7 @@ if split_ratio > 0:
 else:
     train_images = image_files
 
+# Copy all images to train and validate directories
 for image_file in image_files:
     current_output_dir = train_dir if image_file in train_images else validate_dir
     shutil.copy(os.path.join(input_dir, image_file), current_output_dir)
@@ -42,30 +43,32 @@ for filename in tqdm(json_files):
     with open(os.path.join(input_dir, filename)) as f:
         data = json.load(f)
 
-    if filename.replace('.json', '') + '.jpg' in train_images:
-        current_output_dir = train_dir
-    else:
-        current_output_dir = validate_dir
+    image_filename = filename.replace('.json', '')
+    if any(os.path.isfile(os.path.join(input_dir, image_filename + ext)) for ext in ['.jpg', '.png', '.jpeg']):
+        if image_filename + '.jpg' in train_images or image_filename + '.png' in train_images or image_filename + '.jpeg' in train_images:
+            current_output_dir = train_dir
+        else:
+            current_output_dir = validate_dir
 
-    with open(os.path.join(current_output_dir, filename.replace('.json', '.txt')), 'w') as out_file:
-        for shape in data['shapes']:
-            x1, y1 = shape['points'][0]
-            x2, y2 = shape['points'][1]
+        with open(os.path.join(current_output_dir, filename.replace('.json', '.txt')), 'w') as out_file:
+            for shape in data['shapes']:
+                x1, y1 = shape['points'][0]
+                x2, y2 = shape['points'][1]
 
-            dw = 1./data['imageWidth']
-            dh = 1./data['imageHeight']
-            w = x2 - x1
-            h = y2 - y1
-            x = x1 + (w/2)
-            y = y1 + (h/2)
+                dw = 1./data['imageWidth']
+                dh = 1./data['imageHeight']
+                w = x2 - x1
+                h = y2 - y1
+                x = x1 + (w/2)
+                y = y1 + (h/2)
 
-            x *= dw
-            w *= dw
-            y *= dh
-            h *= dh
+                x *= dw
+                w *= dw
+                y *= dh
+                h *= dh
 
-            class_label = class_labels[shape['label']]
+                class_label = class_labels[shape['label']]
 
-            out_file.write(f"{class_label} {x} {y} {w} {h}\n")
+                out_file.write(f"{class_label} {x} {y} {w} {h}\n")
 
 print("Conversion and split completed successfully!")
