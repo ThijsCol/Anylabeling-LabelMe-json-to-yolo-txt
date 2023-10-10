@@ -38,3 +38,5 @@ for filename in os.listdir(json_dir):
                 class_label = class_labels[shape['label']]
 
                 out_file.write(f"{class_label} {x} {y} {w} {h}\n")
+
+print("Conversion completed successfully!")
