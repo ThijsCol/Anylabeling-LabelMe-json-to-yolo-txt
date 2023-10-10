@@ -5,15 +5,15 @@ import json
 class_labels = {"car": 0, "bike": 1, "plane": 2} # Change/add more for your database
 
 # Define the directories
-json_dir = '/anylabeling_data/labels' # Replace with your directory
+input_dir = '/anylabeling_data/labels' # Replace with your directory
 output_dir = '/data/labels' # Replace with your directory
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
 
-for filename in os.listdir(json_dir):
+for filename in os.listdir(input_dir):
     if filename.endswith('.json'):
-        with open(os.path.join(json_dir, filename)) as f:
+        with open(os.path.join(input_dir, filename)) as f:
             data = json.load(f)
 
         with open(os.path.join(output_dir, filename.replace('.json', '.txt')), 'w') as out_file:
