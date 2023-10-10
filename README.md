@@ -14,7 +14,7 @@ Tracks progress using a progress bar. Requires *scikit-learn* and *tqdm*.
 
 -set the `split_ratio`, example: `0.2 # 20% of the data will go to the validation set`.           
 
--If your pictures are a different file extension then *'.jpg', '.png', '.jpeg'* you have to modify or add the required extension to `(('.jpg', '.png', '.jpeg'))`.
+-If your pictures are a different file extension then *'.jpg', '.png', '.jpeg'* you have to modify or add the required extension to lines: 29, 47 and 48.
 
 -Run the script and it should generate the .txt files in the specified directory.
 
