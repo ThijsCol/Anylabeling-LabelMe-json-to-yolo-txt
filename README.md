@@ -1,5 +1,5 @@
 # Anylabeling-json-to-yolo-txt
-Python scripts for converting .json annotations from [Anylabeling](https://github.com/vietanhdev/anylabeling) to YOLO .txt files.
+Python scripts for converting .json annotations from [Anylabeling](https://github.com/vietanhdev/anylabeling) or [LabelMe](https://github.com/wkentaro/labelme) to YOLO .txt files.
 
 -**jsontoyolo.py** will convert the .json annotation files to YOLO .txt files, split them into 'train' and 'validate' folders and copy over the corresponding pictures. 
 Tracks progress using a progress bar. Requires *scikit-learn* and *tqdm*.
