@@ -5,11 +5,11 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
 # Define the class labels 
-class_labels = {"car": 0, "bike": 1, "plane": 2} # Change/add more for your database
+class_labels = {"240l": 0, "140l": 1, "person": 2, "bicycle": 3, "cat": 4, "dog": 5} # Change/add more for your database
 
 # Define the directories
-input_dir = '/anylabeling_data/dataset' # Replace with your directory
-output_dir = '/data/yolo' # Replace with your directory
+input_dir = r'/anylabeling_data/dataset' # Replace with your directory
+output_dir = r'/data/yolo' # Replace with your directory
 
 # Define the train-validate split
 split_ratio = 0.2 # 20% of the data will go to the validation set
@@ -34,12 +34,12 @@ else:
     train_images = image_files
 
 # Copy all images to train and validate directories
-for image_file in image_files:
+for image_file in tqdm(image_files, desc="Copying images"):
     current_output_dir = train_dir if image_file in train_images else validate_dir
     shutil.copy(os.path.join(input_dir, image_file), current_output_dir)
 
 # Use tqdm for progress bar
-for filename in tqdm(json_files):
+for filename in tqdm(json_files, desc="Copying annotations"):
     with open(os.path.join(input_dir, filename)) as f:
         data = json.load(f)
 
