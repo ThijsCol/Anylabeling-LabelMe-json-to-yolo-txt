@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
 # Define the class labels 
-class_labels = {"240l": 0, "140l": 1, "person": 2, "bicycle": 3, "cat": 4, "dog": 5} # Change/add more for your database
+class_labels = {"car": 0, "bike": 1, "plane": 2} # Change/add more for your database
 
 # Define the directories
 input_dir = r'/anylabeling_data/dataset' # Replace with your directory
