@@ -8,8 +8,8 @@ from tqdm import tqdm
 class_labels = {"car": 0, "bike": 1, "plane": 2} # Change/add more for your database
 
 # Define the directories
-input_dir = r'/anylabeling_data/dataset' # Replace with your directory
-output_dir = r'/data/yolo' # Replace with your directory
+input_dir = '/anylabeling_data/dataset' # Replace with your directory
+output_dir = '/data/yolo' # Replace with your directory
 
 # Define the train-validate split
 split_ratio = 0.2 # 20% of the data will go to the validation set
