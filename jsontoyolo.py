@@ -69,6 +69,6 @@ for filename in tqdm(json_files, desc="Copying annotations"):
 
                 class_label = class_labels[shape['label']]
 
-                out_file.write(f"{class_label} {x} {y} {w} {h}\n")
+                out_file.write(f"{class_labels[class_label]} {x} {y} {w} {h}\n")
 
 print("Conversion and split completed successfully!")
