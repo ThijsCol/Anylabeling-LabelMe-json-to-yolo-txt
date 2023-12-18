@@ -67,7 +67,7 @@ for filename in tqdm(json_files, desc="Copying annotations"):
                 y *= dh
                 h *= dh
 
-                class_label = class_labels[shape['label']]
+                class_label = shape['label']
 
                 out_file.write(f"{class_labels[class_label]} {x} {y} {w} {h}\n")
 
