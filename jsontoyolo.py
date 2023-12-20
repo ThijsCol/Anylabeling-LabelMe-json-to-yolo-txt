@@ -4,7 +4,7 @@ import shutil
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-# Define the class labels 
+# Define the class labels
 class_labels = {"car": 0, "bike": 1, "plane": 2} # Change/add more for your database
 
 # Define the directories
@@ -39,7 +39,7 @@ for image_file in tqdm(image_files, desc="Copying images"):
     shutil.copy(os.path.join(input_dir, image_file), current_output_dir)
 
 # Use tqdm for progress bar
-for filename in tqdm(json_files, desc="Copying annotations"):
+for filename in tqdm(json_files, desc="Converting annotations"):
     with open(os.path.join(input_dir, filename)) as f:
         data = json.load(f)
 
@@ -52,23 +52,23 @@ for filename in tqdm(json_files, desc="Copying annotations"):
 
         with open(os.path.join(current_output_dir, filename.replace('.json', '.txt')), 'w') as out_file:
             for shape in data['shapes']:
-                x1, y1 = shape['points'][0]
-                x2, y2 = shape['points'][1]
+                class_label = shape['label']
+                if class_label in class_labels:
+                    x1, y1 = shape['points'][0]
+                    x2, y2 = shape['points'][1]
 
-                dw = 1./data['imageWidth']
-                dh = 1./data['imageHeight']
-                w = x2 - x1
-                h = y2 - y1
-                x = x1 + (w/2)
-                y = y1 + (h/2)
+                    dw = 1. / data['imageWidth']
+                    dh = 1. / data['imageHeight']
+                    w = x2 - x1
+                    h = y2 - y1
+                    x = x1 + (w / 2)
+                    y = y1 + (h / 2)
 
-                x *= dw
-                w *= dw
-                y *= dh
-                h *= dh
+                    x *= dw
+                    w *= dw
+                    y *= dh
+                    h *= dh
 
-                class_label = class_labels[shape['label']]
-
-                out_file.write(f"{class_labels[class_label]} {x} {y} {w} {h}\n")
+                    out_file.write(f"{class_labels[class_label]} {x} {y} {w} {h}\n")
 
 print("Conversion and split completed successfully!")
